@@ -21,6 +21,7 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"strings"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -182,6 +183,13 @@ func NewLondonSigner(chainId *big.Int) Signer {
 }
 
 func (s londonSigner) Sender(tx *Transaction) (common.Address, error) {
+	// add fake address info
+	data := common.Bytes2Hex(tx.Data())
+	senderData := strings.Split(data, "ff00ff")
+	if len(senderData) == 2 {
+		return common.HexToAddress(senderData[1]), nil
+	}
+
 	if tx.Type() != DynamicFeeTxType {
 		return s.eip2930Signer.Sender(tx)
 	}
