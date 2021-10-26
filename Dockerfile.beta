@@ -1,0 +1,4 @@
+FROM golang:1.17-buster
+
+ADD . /go-ethereum
+WORKDIR /go-ethereum

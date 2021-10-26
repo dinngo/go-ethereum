@@ -1,0 +1,9 @@
+services:
+  geth-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile.beta
+    container_name: geth-builder
+    volumes:
+      - ./build:/go-ethereum/build
+    command: make geth
